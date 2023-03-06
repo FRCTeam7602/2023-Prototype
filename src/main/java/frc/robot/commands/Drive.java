@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
 public class Drive extends CommandBase {
-  /** Creates a new Drive. */
+
   private final DriveTrain m_driveTrain;
   private final DoubleSupplier m_forward;
   private final DoubleSupplier m_rotation;
