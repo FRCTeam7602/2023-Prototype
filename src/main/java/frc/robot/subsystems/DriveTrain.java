@@ -5,10 +5,20 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class DriveTrain extends SubsystemBase {
-  /** Creates a new Chassis. */
-  public DriveTrain() {}
+  private CANSparkMax driveLeft = new CANSparkMax(Constants.DRIVE_LEFT_CONTROLLER, MotorType.kBrushless);
+  private CANSparkMax driveRight = new CANSparkMax(Constants.DRIVE_RIGHT_CONTROLLER, MotorType.kBrushless);
+  private DifferentialDrive drive = new DifferentialDrive(driveLeft, driveRight);
+
+  private CANSparkMax omniLeft = new CANSparkMax(Constants.OMNI_LEFT_CONTROLLER, MotorType.kBrushless);
+  private CANSparkMax omniRight = new CANSparkMax(Constants.OMNI_RIGHT_CONTROLLER, MotorType.kBrushless);
+  private DifferentialDrive omniDrive = new DifferentialDrive(omniLeft, omniRight);
 
   @Override
   public void periodic() {
@@ -17,5 +27,9 @@ public class DriveTrain extends SubsystemBase {
 
   public void drive(double forward, double rotation) {
     System.out.println("DRIVING " + forward);
+    drive.arcadeDrive(forward, rotation);
+    if(forward > .7) {
+      omniDrive.arcadeDrive(forward, rotation);
+    }
   }
 }
