@@ -12,25 +12,46 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class DriveTrain extends SubsystemBase {
-  private CANSparkMax driveLeft = new CANSparkMax(Constants.DRIVE_LEFT_CONTROLLER, MotorType.kBrushless);
-  private CANSparkMax driveRight = new CANSparkMax(Constants.DRIVE_RIGHT_CONTROLLER, MotorType.kBrushless);
-  private DifferentialDrive drive = new DifferentialDrive(driveLeft, driveRight);
+  private final CANSparkMax driveLeft;
+  private final CANSparkMax driveRight;
+  private final DifferentialDrive drive;
 
-  private CANSparkMax omniLeft = new CANSparkMax(Constants.OMNI_LEFT_CONTROLLER, MotorType.kBrushless);
-  private CANSparkMax omniRight = new CANSparkMax(Constants.OMNI_RIGHT_CONTROLLER, MotorType.kBrushless);
-  private DifferentialDrive omniDrive = new DifferentialDrive(omniLeft, omniRight);
+  private CANSparkMax omniLeft;
+  private CANSparkMax omniRight;
+  private DifferentialDrive omniDrive;
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+  public DriveTrain() {
+    driveLeft = new CANSparkMax(Constants.DRIVE_LEFT_CONTROLLER, MotorType.kBrushless);
+    driveRight = new CANSparkMax(Constants.DRIVE_RIGHT_CONTROLLER, MotorType.kBrushless);
+    omniLeft = new CANSparkMax(Constants.OMNI_LEFT_CONTROLLER, MotorType.kBrushless);
+    omniRight = new CANSparkMax(Constants.OMNI_RIGHT_CONTROLLER, MotorType.kBrushless);
+
+    driveLeft.restoreFactoryDefaults();
+    driveLeft.restoreFactoryDefaults();
+    omniLeft.restoreFactoryDefaults();
+    omniRight.restoreFactoryDefaults();
+
+    driveLeft.setSmartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
+    driveRight.setSmartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
+    omniLeft.setSmartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
+    omniRight.setSmartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
+
+    drive = new DifferentialDrive(driveLeft, driveRight);
+    omniDrive = new DifferentialDrive(omniLeft, omniRight);
+
+    // disabling motor safety since this is drive train and user controls
+    // don't always change 10 times per second
+    drive.setSafetyEnabled(false);
+    omniDrive.setSafetyEnabled(false);
   }
 
   public void drive(double forward, double rotation) {
+    // trying out curvatureDrive to compare with arcadeDrive
+    drive.curvatureDrive(forward, rotation, true);
     System.out.format("DRIVING %.2f by %.2f\n", forward, rotation);
-    drive.arcadeDrive(forward, rotation);
     if(Math.abs(forward) > .7) {
-      System.out.format("OMNI %.2f by %.2f\n", forward, rotation);
-      omniDrive.arcadeDrive(forward, rotation);
+      omniDrive.curvatureDrive(forward, rotation, true);
+      System.out.format("BOOSTING with OMNI %.2f by %.2f\n", forward, rotation);
     }
   }
 }

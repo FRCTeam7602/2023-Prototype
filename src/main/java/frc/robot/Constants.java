@@ -23,6 +23,7 @@ public final class Constants {
   public static final int ELEVATOR_CONTROLLER = 5;
   public static final int PINCHER_CONTROLLER = 6;
 
+  public static final int NEO_CURRENT_LIMIT = 35;
 
   public static class OperatorConstants {
     public static final int JOYSTICK_PORT = 0;
