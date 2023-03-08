@@ -46,12 +46,15 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void drive(double forward, double rotation) {
-    // trying out curvatureDrive to compare with arcadeDrive
-    drive.curvatureDrive(forward, rotation, true);
+    drive.arcadeDrive(forward, rotation);
     System.out.format("DRIVING %.2f by %.2f\n", forward, rotation);
     if(Math.abs(forward) > .7) {
-      omniDrive.curvatureDrive(forward, rotation, true);
+      omniDrive.arcadeDrive(forward, rotation);
       System.out.format("BOOSTING with OMNI %.2f by %.2f\n", forward, rotation);
+    } else {
+      // note that it is important that the drive train motor controllers
+      // be configured for coasting when off
+      omniDrive.arcadeDrive(0, 0);
     }
   }
 }
