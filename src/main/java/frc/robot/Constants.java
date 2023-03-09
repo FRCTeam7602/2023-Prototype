@@ -22,6 +22,7 @@ public final class Constants {
   // Elevator and pincher controllers
   public static final int ELEVATOR_CONTROLLER = 5;
   public static final int PINCHER_CONTROLLER = 6;
+  public static final int ARM_CONTROLLER = 7;
 
   public static final int NEO_CURRENT_LIMIT = 35;
 
