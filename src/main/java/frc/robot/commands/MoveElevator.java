@@ -4,27 +4,50 @@
 
 package frc.robot.commands;
 
+import java.util.function.IntSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Elevator;
 
-public class ElevatorJoystick extends CommandBase {
+public class MoveElevator extends CommandBase {
   /** Creates a new ElevatorJoystick. */
 
   private final Elevator m_elevator;
+  private final IntSupplier m_pov;
+  private boolean moving;
 
-  public ElevatorJoystick(Elevator elevator) {
+  public MoveElevator(Elevator elevator, IntSupplier pov) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_elevator = elevator;
+    m_pov = pov;
     addRequirements(m_elevator);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    moving = false;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if(m_pov.getAsInt() > -1){
+    System.out.println("POV");
+    }
+    if(m_pov.getAsInt() == 0){
+      m_elevator.moveUp();
+      moving = true;
+    }
+    if(m_pov.getAsInt() == 180){
+      m_elevator.moveDown();
+      moving = true;
+    }
+    if(moving && m_pov.getAsInt() == -1) {
+      m_elevator.stop();
+      moving = false;
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override

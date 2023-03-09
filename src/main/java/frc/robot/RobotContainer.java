@@ -12,6 +12,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ArmJoystick;
 import frc.robot.commands.Drive;
 import frc.robot.commands.ElevatorBottom;
+import frc.robot.commands.MoveElevator;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
@@ -41,7 +42,7 @@ public class RobotContainer {
 
     m_arm.setDefaultCommand(
       new ArmJoystick(m_arm, () -> m_elevatorController.getLeftTriggerAxis(), () -> m_elevatorController.getRightTriggerAxis()));
-    // TODO - maybe add a default command for elevator?
+    m_elevator.setDefaultCommand(new MoveElevator(m_elevator, () -> m_elevatorController.getHID().getPOV()));
     m_driveTrain.setDefaultCommand(
       new Drive(m_driveTrain, () -> -m_driverController.getY(), () -> m_driverController.getTwist())
     );
