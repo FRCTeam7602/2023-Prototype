@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
 
@@ -11,10 +13,14 @@ public class ArmJoystick extends CommandBase {
   /** Creates a new ArmJoystick. */
 
   private final Arm m_arm;
+  private final DoubleSupplier m_leftTrigger;
+  private final DoubleSupplier m_rightTrigger;
 
-  public ArmJoystick(Arm arm) {
+  public ArmJoystick(Arm arm, DoubleSupplier leftTrigger, DoubleSupplier rightTrigger) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_arm = arm;
+    m_leftTrigger = leftTrigger;
+    m_rightTrigger = rightTrigger;
     addRequirements(m_arm);
   }
 
@@ -24,7 +30,9 @@ public class ArmJoystick extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    m_arm.extend(m_leftTrigger.getAsDouble() - m_rightTrigger.getAsDouble());
+  }
 
   // Called once the command ends or is interrupted.
   @Override

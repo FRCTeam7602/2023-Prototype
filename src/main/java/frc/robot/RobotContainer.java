@@ -4,13 +4,15 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Drive;
-import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ArmJoystick;
+import frc.robot.commands.Drive;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.DriveTrain;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -19,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  private final Arm m_arm = new Arm();
   private final DriveTrain m_driveTrain = new DriveTrain();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -33,6 +36,8 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
+    m_arm.setDefaultCommand(
+      new ArmJoystick(m_arm, () -> m_elevatorController.getLeftTriggerAxis(), () -> m_elevatorController.getRightTriggerAxis()));
     m_driveTrain.setDefaultCommand(
       new Drive(m_driveTrain, () -> -m_driverController.getY(), () -> m_driverController.getTwist())
     );

@@ -47,7 +47,9 @@ public class DriveTrain extends SubsystemBase {
 
   public void drive(double forward, double rotation) {
     drive.arcadeDrive(forward, rotation);
-    System.out.format("DRIVING %.2f by %.2f\n", forward, rotation);
+    if(Math.abs(forward) > .1 || Math.abs(rotation) > .1) {
+      System.out.format("DRIVING %.2f by %.2f\n", forward, rotation);
+    }
     if(Math.abs(forward) > .7) {
       omniDrive.arcadeDrive(forward, rotation);
       System.out.format("BOOSTING with OMNI %.2f by %.2f\n", forward, rotation);

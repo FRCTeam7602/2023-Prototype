@@ -14,4 +14,20 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
+  /**
+   * Extend the arm by driving motor at given rate.  A positive number would
+   * push the arm out and a negative number brings it back in.
+   */
+  public void extend(double rate) {
+    if (rate > 0.4) {
+      System.out.printf("Extending Arm %.2f\n", rate);
+    } else if(rate < -0.4) {
+      System.out.printf("Retracting Arm %.2f\n", rate);
+    }
+
+    // TODO add actual motor controller and set value
+    // TODO make sure controller for arm is in brake mode
+    // TODO add encoder and limit switches
+  }
 }
