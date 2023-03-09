@@ -11,8 +11,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ArmJoystick;
 import frc.robot.commands.Drive;
+import frc.robot.commands.ElevatorBottom;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Elevator;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -22,6 +24,7 @@ import frc.robot.subsystems.DriveTrain;
  */
 public class RobotContainer {
   private final Arm m_arm = new Arm();
+  private final Elevator m_elevator = new Elevator();
   private final DriveTrain m_driveTrain = new DriveTrain();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -38,6 +41,7 @@ public class RobotContainer {
 
     m_arm.setDefaultCommand(
       new ArmJoystick(m_arm, () -> m_elevatorController.getLeftTriggerAxis(), () -> m_elevatorController.getRightTriggerAxis()));
+    // TODO - maybe add a default command for elevator?
     m_driveTrain.setDefaultCommand(
       new Drive(m_driveTrain, () -> -m_driverController.getY(), () -> m_driverController.getTwist())
     );
@@ -60,6 +64,8 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+
+    m_elevatorController.a().onTrue(new ElevatorBottom(m_elevator));
   }
 
   /**

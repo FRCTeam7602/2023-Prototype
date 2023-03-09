@@ -12,6 +12,10 @@ public class ElevatorBottom extends CommandBase {
 
   private final Elevator m_elevator;
 
+  // TODO - replace me with use of actual encoder; this was added to get
+  // initial debugging when setting up the triggers
+  private int pseudoEncoder;
+
   public ElevatorBottom(Elevator elevator) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_elevator = elevator;
@@ -20,19 +24,28 @@ public class ElevatorBottom extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    System.out.println("Elevator initialize");
+    pseudoEncoder = 0;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    System.out.println("Elevator execute");
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    System.out.println("Elevator end");
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    // TODO - probably want to be watching both a physical limit switch
+    // as well as the range finder
+    return pseudoEncoder++ > 5;
   }
 }
