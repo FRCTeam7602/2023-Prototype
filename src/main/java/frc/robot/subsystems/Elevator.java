@@ -22,6 +22,16 @@ public class Elevator extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
+  public void elevatorTop() {
+    System.out.println("Elevator to top");
+    elevatorMotor.set(0.2);
+  }
+
+  public void elevatorBottom() {
+    System.out.println("Elevator to bottom");
+    elevatorMotor.set(-0.2);
+  }
+
   public void moveUp() {
     System.out.println("Moving up");
     elevatorMotor.set(0.2);

@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Elevator;
 
@@ -11,14 +13,16 @@ public class ElevatorBottom extends CommandBase {
   /** Creates a new ElevatorBottom. */
 
   private final Elevator m_elevator;
+  private final DoubleSupplier m_leftJoystick;
 
   // TODO - replace me with use of actual encoder; this was added to get
   // initial debugging when setting up the triggers
   private int pseudoEncoder;
 
-  public ElevatorBottom(Elevator elevator) {
+  public ElevatorBottom(Elevator elevator, DoubleSupplier leftJoystick) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_elevator = elevator;
+    m_leftJoystick = leftJoystick;
     addRequirements(m_elevator);
   }
 
@@ -32,13 +36,15 @@ public class ElevatorBottom extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Elevator execute");
+    if(m_leftJoystick.getAsDouble() > 0.8) {
+      m_elevator.elevatorBottom();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("Elevator end");
+    m_elevator.stop();
   }
 
   // Returns true when the command should end.

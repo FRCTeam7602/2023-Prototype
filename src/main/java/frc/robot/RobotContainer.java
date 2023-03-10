@@ -12,6 +12,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ArmJoystick;
 import frc.robot.commands.Drive;
 import frc.robot.commands.ElevatorBottom;
+import frc.robot.commands.ElevatorTop;
 import frc.robot.commands.MoveElevator;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
@@ -66,8 +67,12 @@ public class RobotContainer {
     // cancelling on release.
     // m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    m_elevatorController.a().onTrue(new ElevatorBottom(m_elevator));
-  }
+    //m_elevatorController.leftStick(new )
+    //m_elevatorController.getRawAxis(1)
+    m_elevatorController.axisGreaterThan(1, 0.5).onTrue(new ElevatorBottom(m_elevator, () -> m_elevatorController.getRawAxis(1)));
+    m_elevatorController.axisLessThan(1, -0.5).onTrue(new ElevatorTop(m_elevator, () -> m_elevatorController.getRawAxis(1)));
+    
+;  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
