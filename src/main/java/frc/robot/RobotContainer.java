@@ -57,10 +57,8 @@ public class RobotContainer {
   private void configureBindings() {
 
     // elevator
-    m_elevatorController.axisGreaterThan(ELEVATOR_TRIGGER_AXIS, 0.5)
-      .onTrue(new ElevatorBottom(m_elevator, () -> m_elevatorController.getRawAxis(ELEVATOR_TRIGGER_AXIS)));
-    m_elevatorController.axisLessThan(ELEVATOR_TRIGGER_AXIS, -0.5)
-      .onTrue(new ElevatorTop(m_elevator, () -> m_elevatorController.getRawAxis(ELEVATOR_TRIGGER_AXIS)));
+    m_elevatorController.axisGreaterThan(ELEVATOR_TRIGGER_AXIS, 0.5).onTrue(new ElevatorBottom(m_elevator));
+    m_elevatorController.axisLessThan(ELEVATOR_TRIGGER_AXIS, -0.5).onTrue(new ElevatorTop(m_elevator));
     m_elevatorController.povUp().whileTrue(new ElevatorUp(m_elevator));
     m_elevatorController.povDown().whileTrue(new ElevatorDown(m_elevator));
 
