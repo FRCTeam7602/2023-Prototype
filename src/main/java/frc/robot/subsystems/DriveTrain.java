@@ -31,10 +31,10 @@ public class DriveTrain extends SubsystemBase {
     omniLeft.restoreFactoryDefaults();
     omniRight.restoreFactoryDefaults();
 
-    driveLeft.setSmartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
-    driveRight.setSmartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
-    omniLeft.setSmartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
-    omniRight.setSmartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
+    driveLeft.setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
+    driveRight.setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
+    omniLeft.setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
+    omniRight.setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
 
     drive = new DifferentialDrive(driveLeft, driveRight);
     omniDrive = new DifferentialDrive(omniLeft, omniRight);

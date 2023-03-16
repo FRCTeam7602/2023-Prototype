@@ -8,31 +8,32 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Pincher;
 
 public class ReadyPinchers extends CommandBase {
-  /** Creates a new ReadyPinchers. */
 
   private final Pincher m_pincher;
 
   public ReadyPinchers(Pincher pincher) {
-    // Use addRequirements() here to declare subsystem dependencies.
     m_pincher = pincher;
     addRequirements(m_pincher);
   }
 
-  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_pincher.ready();
+  }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {}
 
-  // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    if (!interrupted) {
+      m_pincher.stop();
+    }
+  }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    System.out.println("FINISH...ING");
+    return m_pincher.isInPosition();
   }
 }

@@ -24,7 +24,26 @@ public final class Constants {
   public static final int PINCHER_CONTROLLER = 6;
   public static final int ARM_CONTROLLER = 7;
 
-  public static final int NEO_CURRENT_LIMIT = 35;
+  // Current limits to try to help avoid brownouts
+  public static final int DRIVE_CURRENT_LIMIT = 55;
+  public static final int PINCHER_CURRENT_LIMIT = 35;
+
+  // Sensors
+  public static final int ELEVATOR_SENSOR_ECHO_PORT = 7;
+  public static final int ELEVATOR_SENSOR_PING_PORT = 6;
+
+  // Velocity and scaling values for motors
+  public static final float PINCHER_MOVE_VELOCITY = 0.5f;
+  public static final float PINCHER_CONTROL_SCALING = 5.0f;
+
+  // Encoder limits and stops
+  public static class Pincher {
+    public static final int MIN_POSITION = 0;
+    public static final int MAX_POSITION = 38;
+    public static final int CUBE_STOP = 36;
+    public static final int CONE_STOP = 37;
+    public static final int READY_STOP = 10;
+  }
 
   public static class OperatorConstants {
     public static final int JOYSTICK_PORT = 0;

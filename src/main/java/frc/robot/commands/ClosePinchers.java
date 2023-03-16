@@ -4,35 +4,43 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Pincher;
 
+/**
+ * The plan is that the left trigger on the gamepad will open the
+ * pinchers and the right trigger will close the pinchers.  When the
+ * trigger is pressed the pinchers should move and then stop moving
+ * when the trigger is released.
+ */
 public class ClosePinchers extends CommandBase {
-  /** Creates a new ClosePinchers. */
 
   private final Pincher m_pincher;
+  private final DoubleSupplier m_triggerAxis;
 
-  public ClosePinchers(Pincher pincher) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public ClosePinchers(Pincher pincher, DoubleSupplier triggerAxis) {
     m_pincher = pincher;
+    m_triggerAxis = triggerAxis;
     addRequirements(m_pincher);
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    m_pincher.close(m_triggerAxis.getAsDouble());
+  }
 
-  // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_pincher.stop();
+  }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (m_triggerAxis.getAsDouble() > -.2f) || m_pincher.isInPosition();
   }
 }
