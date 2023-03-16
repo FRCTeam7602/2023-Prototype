@@ -31,6 +31,6 @@ public class ElevatorUp extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return m_elevator.isTop();
   }
 }

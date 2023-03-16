@@ -30,7 +30,9 @@ public final class Constants {
 
   // Velocity and scaling values for motors
   public static final float ARM_MOVE_VELOCITY = 0.2f;
+  public static final float ARM_SLOW_SCALING = 1.0f;
   public static final float ELEVATOR_MOVE_VELOCITY = 0.2f;
+  public static final float ELEVATOR_SLOW_SCALING = 1.0f;
   public static final float PINCHER_MOVE_VELOCITY = 0.5f;
   public static final float PINCHER_CONTROL_SCALING = 5.0f;
 

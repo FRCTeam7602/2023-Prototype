@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import static frc.robot.Constants.ELEVATOR_CONTROLLER;
+import static frc.robot.Constants.ELEVATOR_SLOW_SCALING;
 import static frc.robot.Constants.ELEVATOR_MOVE_VELOCITY;
 import static frc.robot.Constants.Elevator.MAX_POSITION;
 import static frc.robot.Constants.Elevator.MIN_POSITION;
@@ -97,7 +98,7 @@ public class Elevator extends SubsystemBase {
   }
 
   private void slowDown() {
-    elevatorMotor.set(elevatorMotor.get() / 5);
+    elevatorMotor.set(elevatorMotor.get() / ELEVATOR_SLOW_SCALING);
   }
 
   private void up() {
