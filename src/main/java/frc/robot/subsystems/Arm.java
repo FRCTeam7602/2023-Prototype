@@ -4,30 +4,82 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Arm extends SubsystemBase {
-  /** Creates a new Arm. */
-  public Arm() {}
+
+  private final CANSparkMax armMotor;
+  private final RelativeEncoder armEncoder;
+
+  // free form string used to communicate state to dashboard
+  private String command;
+
+  public Arm() {
+    armMotor = new CANSparkMax(Constants.ARM_CONTROLLER, MotorType.kBrushless);
+    armMotor.restoreFactoryDefaults();
+    armEncoder = armMotor.getEncoder();
+    armEncoder.setPosition(0);
+  }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    updateDashboard();
   }
 
   /**
    * Extend the arm by driving motor at given rate.  A positive number would
    * push the arm out and a negative number brings it back in.
+   * 
+   * We expect the arm to hold position when not getting any other input.
    */
   public void extend(double rate) {
-    if (rate > 0.4) {
-      System.out.printf("Extending Arm %.2f\n", rate);
-    } else if(rate < -0.4) {
-      System.out.printf("Retracting Arm %.2f\n", rate);
+    command = "EXTEND";
+    if (!isFullyExtended()) {
+      armMotor.set(rate * Constants.ARM_MOVE_VELOCITY);
+    } else {
+      ignoreCommand();
     }
+  }
 
-    // TODO add actual motor controller and set value
-    // TODO make sure controller for arm is in brake mode
-    // TODO add encoder and limit switches
+  public void retract(double rate) {
+    command = "RETRACT";
+    if (!isFullyRetracted()) {
+      armMotor.set(rate * Constants.ARM_MOVE_VELOCITY);
+    } else {
+      ignoreCommand();
+    }
+  }
+
+  public void stop() {
+    command = "STOP";
+    armMotor.stopMotor();
+  }
+
+  public boolean isFullyRetracted() {
+    return (armEncoder.getPosition() - Constants.Arm.MIN_POSITION) <= 1.0f;
+  }
+
+  public boolean isFullyExtended() {
+    return (Constants.Arm.MAX_POSITION - armEncoder.getPosition()) <= 1.0f;
+  }
+
+  private void ignoreCommand() {
+    command += " (ignored)";
+  }
+
+  /**
+   * Putting things like the current encoder position, target position, and latest
+   * command in the dashboard.
+   */
+  private void updateDashboard() {
+    double position = armEncoder.getPosition();
+    SmartDashboard.putNumber("Arm Encoder Position", position);
+    SmartDashboard.putString("Arm Last Command", command);
   }
 }

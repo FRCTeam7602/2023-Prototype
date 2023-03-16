@@ -4,19 +4,23 @@
 
 package frc.robot;
 
+import static frc.robot.Constants.OperatorConstants.GAMEPPAD_PORT;
+import static frc.robot.Constants.OperatorConstants.JOYSTICK_PORT;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ClosePinchers;
 import frc.robot.commands.Drive;
 import frc.robot.commands.ElevatorBottom;
 import frc.robot.commands.ElevatorTop;
+import frc.robot.commands.ExtendArm;
 import frc.robot.commands.GetCube;
 import frc.robot.commands.GetStandingCone;
 import frc.robot.commands.MoveElevator;
 import frc.robot.commands.OpenPinchers;
 import frc.robot.commands.ReadyPinchers;
+import frc.robot.commands.RetractArm;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
@@ -31,11 +35,8 @@ public class RobotContainer {
   private final Elevator m_elevator = new Elevator();
   private final Pincher m_pincher = new Pincher();
 
-  private final CommandJoystick m_driverController =
-    new CommandJoystick(OperatorConstants.JOYSTICK_PORT);
-
-  private final CommandXboxController m_elevatorController =
-    new CommandXboxController(OperatorConstants.GAMEPPAD_PORT);
+  private final CommandJoystick m_driverController = new CommandJoystick(JOYSTICK_PORT);
+  private final CommandXboxController m_elevatorController = new CommandXboxController(GAMEPPAD_PORT);
 
   public RobotContainer() {
     configureBindings();
@@ -59,6 +60,8 @@ public class RobotContainer {
     m_elevator.setDefaultCommand(new MoveElevator(m_elevator, () -> m_elevatorController.getHID().getPOV()));
 
     // arm
+    m_elevatorController.axisGreaterThan(4, .5).onTrue(new ExtendArm(m_arm, () -> m_elevatorController.getRawAxis(4)));
+    m_elevatorController.axisLessThan(4, -0.5).onTrue(new RetractArm(m_arm, () -> m_elevatorController.getRawAxis(4)));
 
     // pincher
     m_elevatorController.axisGreaterThan(2, .5).onTrue(new OpenPinchers(m_pincher, () -> m_elevatorController.getRawAxis(2)));

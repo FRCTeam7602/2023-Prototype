@@ -5,12 +5,8 @@
 package frc.robot;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
- * globally (i.e. public static). Do not put anything functional in this class.
- *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
- * constants are needed, to reduce verbosity.
+ * Our robot-wide constant with some more specific groupings like for limits
+ * or Operator Inputs.
  */
 public final class Constants {
   //Drive Controllers
@@ -33,8 +29,15 @@ public final class Constants {
   public static final int ELEVATOR_SENSOR_PING_PORT = 6;
 
   // Velocity and scaling values for motors
+  public static final float ARM_MOVE_VELOCITY = 0.2f;
   public static final float PINCHER_MOVE_VELOCITY = 0.5f;
   public static final float PINCHER_CONTROL_SCALING = 5.0f;
+
+  // Arm limits
+  public static class Arm {
+    public static final int MIN_POSITION = 0;
+    public static final int MAX_POSITION = 20;
+  }
 
   // Encoder limits and stops
   public static class Pincher {
