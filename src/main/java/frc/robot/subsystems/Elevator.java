@@ -11,16 +11,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Elevator extends SubsystemBase {
-  /** Creates a new Elevator. */
+
   private final CANSparkMax elevatorMotor;
+
   public Elevator() {
     elevatorMotor = new CANSparkMax(Constants.ELEVATOR_CONTROLLER, MotorType.kBrushless);
   }
 
   @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+  public void periodic() {}
 
   public void elevatorTop() {
     System.out.println("Elevator to top");
