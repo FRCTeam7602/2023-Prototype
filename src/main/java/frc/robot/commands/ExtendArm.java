@@ -35,7 +35,7 @@ public class ExtendArm extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return (getTriggerAxis() < .2f) || m_arm.isFullyExtended();
+    return false;
   }
 
   /**

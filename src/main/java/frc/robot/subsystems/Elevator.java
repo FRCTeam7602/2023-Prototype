@@ -4,45 +4,113 @@
 
 package frc.robot.subsystems;
 
+import static frc.robot.Constants.ELEVATOR_CONTROLLER;
+import static frc.robot.Constants.ELEVATOR_MOVE_VELOCITY;
+import static frc.robot.Constants.Elevator.MAX_POSITION;
+import static frc.robot.Constants.Elevator.MIN_POSITION;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 public class Elevator extends SubsystemBase {
 
   private final CANSparkMax elevatorMotor;
+  private final RelativeEncoder elevatorEncoder;
+
+  // free form string used to communicate state to dashboard
+  private String command = "";
+
+  // used by top and bottom commands; hoping to replace when we
+  // move to PID control
+  private int targetPosition;
 
   public Elevator() {
-    elevatorMotor = new CANSparkMax(Constants.ELEVATOR_CONTROLLER, MotorType.kBrushless);
+    elevatorMotor = new CANSparkMax(ELEVATOR_CONTROLLER, MotorType.kBrushless);
+    elevatorMotor.restoreFactoryDefaults();
+    elevatorEncoder = elevatorMotor.getEncoder();
+    elevatorEncoder.setPosition(0);
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+    updateDashboard();
+
+    if (isCloseToPosition()) {
+      slowDown();
+    }
+  }
 
   public void elevatorTop() {
-    System.out.println("Elevator to top");
-    elevatorMotor.set(0.2);
+    command = "TOP";
+    targetPosition = MAX_POSITION;
+    up();
   }
 
   public void elevatorBottom() {
-    System.out.println("Elevator to bottom");
-    elevatorMotor.set(-0.2);
+    command = "BOTTOM";
+    targetPosition = MIN_POSITION;
+    down();
   }
 
   public void moveUp() {
-    System.out.println("Moving up");
-    elevatorMotor.set(0.2);
+    command = "UP";
+    up();
   }
 
   public void moveDown() {
-    System.out.println("Moving down");
-    elevatorMotor.set(-0.2);
+    command = "DOWN";
+    down();
   }
 
   public void stop() {
-    System.out.println("Stopping");
-    elevatorMotor.set(0);
+    command = "STOP";
+    elevatorMotor.stopMotor();
+  }
+
+  public boolean isBottom() {
+    return (elevatorEncoder.getPosition() - MIN_POSITION) <= 1.0f;
+  }
+
+  public boolean isTop() {
+    return (MAX_POSITION - elevatorEncoder.getPosition()) <= 1.0f;
+  }
+
+  private void down() {
+    if (!isBottom()) {
+      elevatorMotor.set(-ELEVATOR_MOVE_VELOCITY);
+    } else {
+      ignoreCommand();
+    }
+  }
+
+  private void ignoreCommand() {
+    command = command + " (ignored)";
+  }
+
+  private boolean isCloseToPosition() {
+    double delta = Math.abs(elevatorEncoder.getPosition() - targetPosition);
+    return delta < 10.0f;
+  }
+
+  private void slowDown() {
+    elevatorMotor.set(elevatorMotor.get() / 5);
+  }
+
+  private void up() {
+    if (!isTop()) {
+      elevatorMotor.set(ELEVATOR_MOVE_VELOCITY);
+    } else {
+      ignoreCommand();
+    }
+  }
+
+  private void updateDashboard() {
+    double position = elevatorEncoder.getPosition();
+    SmartDashboard.putNumber("Elevator Encoder Position", position);
+    SmartDashboard.putString("Elevator Last Command", command);
   }
 }

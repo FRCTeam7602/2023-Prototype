@@ -35,7 +35,7 @@ public class RetractArm extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return (getTriggerAxis() < .2f) || m_arm.isFullyRetracted();
+    return false;
   }
 
   /**

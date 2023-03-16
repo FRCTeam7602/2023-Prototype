@@ -41,6 +41,6 @@ public class ClosePinchers extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return (m_triggerAxis.getAsDouble() > -.2f) || m_pincher.isInPosition();
+    return false;
   }
 }

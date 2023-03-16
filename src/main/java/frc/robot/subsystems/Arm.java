@@ -18,11 +18,12 @@ public class Arm extends SubsystemBase {
   private final RelativeEncoder armEncoder;
 
   // free form string used to communicate state to dashboard
-  private String command;
+  private String command = "";
 
   public Arm() {
     armMotor = new CANSparkMax(Constants.ARM_CONTROLLER, MotorType.kBrushless);
     armMotor.restoreFactoryDefaults();
+    armMotor.setInverted(true);
     armEncoder = armMotor.getEncoder();
     armEncoder.setPosition(0);
   }
@@ -50,7 +51,7 @@ public class Arm extends SubsystemBase {
   public void retract(double rate) {
     command = "RETRACT";
     if (!isFullyRetracted()) {
-      armMotor.set(rate * Constants.ARM_MOVE_VELOCITY);
+      armMotor.set(-rate * Constants.ARM_MOVE_VELOCITY);
     } else {
       ignoreCommand();
     }
@@ -70,13 +71,9 @@ public class Arm extends SubsystemBase {
   }
 
   private void ignoreCommand() {
-    command += " (ignored)";
+    command = command + " (ignored)";
   }
 
-  /**
-   * Putting things like the current encoder position, target position, and latest
-   * command in the dashboard.
-   */
   private void updateDashboard() {
     double position = armEncoder.getPosition();
     SmartDashboard.putNumber("Arm Encoder Position", position);

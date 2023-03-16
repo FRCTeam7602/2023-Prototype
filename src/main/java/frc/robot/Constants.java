@@ -30,6 +30,7 @@ public final class Constants {
 
   // Velocity and scaling values for motors
   public static final float ARM_MOVE_VELOCITY = 0.2f;
+  public static final float ELEVATOR_MOVE_VELOCITY = 0.2f;
   public static final float PINCHER_MOVE_VELOCITY = 0.5f;
   public static final float PINCHER_CONTROL_SCALING = 5.0f;
 
@@ -39,7 +40,13 @@ public final class Constants {
     public static final int MAX_POSITION = 20;
   }
 
-  // Encoder limits and stops
+  // Elevator limits and stops
+  public static class Elevator {
+    public static final int MIN_POSITION = 0;
+    public static final int MAX_POSITION = 30;
+  }
+
+  // Pincher limits and stops
   public static class Pincher {
     public static final int MIN_POSITION = 0;
     public static final int MAX_POSITION = 38;
@@ -51,5 +58,9 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int JOYSTICK_PORT = 0;
     public static final int GAMEPPAD_PORT = 1;
+
+    public static final int ARM_TRIGGER_AXIS = 3;
+    public static final int ELEVATOR_TRIGGER_AXIS = 1;
+    public static final int PINCHER_TRIGGER_AXIS = 2;
   }
 }
