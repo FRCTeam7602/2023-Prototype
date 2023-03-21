@@ -31,10 +31,12 @@ public class DriveTrain extends SubsystemBase {
     omniLeft.restoreFactoryDefaults();
     omniRight.restoreFactoryDefaults();
 
-    driveLeft.setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
-    driveRight.setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
-    omniLeft.setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
-    omniRight.setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
+    // driveLeft.setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
+    // driveRight.setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
+    // omniLeft.setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
+    // omniRight.setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
+
+    driveRight.setInverted(true);
 
     drive = new DifferentialDrive(driveLeft, driveRight);
     omniDrive = new DifferentialDrive(omniLeft, omniRight);
@@ -45,18 +47,22 @@ public class DriveTrain extends SubsystemBase {
     omniDrive.setSafetyEnabled(false);
   }
 
+  public void stop() {
+    drive.stopMotor();
+  }
+
   public void drive(double forward, double rotation) {
-    drive.arcadeDrive(forward, rotation);
+    drive.arcadeDrive(forward * 0.8, -rotation * 0.85);
     if(Math.abs(forward) > .1 || Math.abs(rotation) > .1) {
       System.out.format("DRIVING %.2f by %.2f\n", forward, rotation);
     }
-    if(Math.abs(forward) > .7) {
-      omniDrive.arcadeDrive(forward, rotation);
-      System.out.format("BOOSTING with OMNI %.2f by %.2f\n", forward, rotation);
-    } else {
-      // note that it is important that the drive train motor controllers
-      // be configured for coasting when off
-      omniDrive.arcadeDrive(0, 0);
-    }
+    // if(Math.abs(forward) > .7) {
+    //   omniDrive.arcadeDrive(forward, rotation);
+    //   System.out.format("BOOSTING with OMNI %.2f by %.2f\n", forward, rotation);
+    // } else {
+    //   // note that it is important that the drive train motor controllers
+    //   // be configured for coasting when off
+    //   omniDrive.arcadeDrive(0, 0);
+    // }
   }
 }
