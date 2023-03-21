@@ -7,6 +7,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.Timer;
+import frc.robot.subsystems.DriveTrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -16,6 +18,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+  private Timer timer;
+  //private DriveTrain m_driveTrain = new DriveTrain();
 
   private RobotContainer m_robotContainer;
 
@@ -57,6 +61,11 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    // timer = new Timer();
+    // timer.stop();
+    // timer.reset();
+    
+    
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -66,7 +75,29 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    //DriveTrain m_driveTrain = m_robotContainer.getDriveTrain();
+    // timer.start();
+    // if (timer.get() >= 1.0) {
+    //   System.out.println("Backing up");
+    //   //m_driveTrain.drive(-0.3, 0);
+    // }
+    // if (timer.get() >= 2.5){
+    //   System.out.println("Not backing up");
+    //   //m_driveTrain.stop();
+    // }
+    // if(timer.get() >= 3.5) {
+    //   System.out.println("Going forward");
+    //   //m_driveTrain.drive(0.7, 0);
+    // }
+    // if(timer.get() >= 5.0) {
+    //   System.out.println("Out of community");
+    //   //m_driveTrain.stop();
+    // }
+    // if(timer.get() > 5.0) {
+    //   timer.stop();
+    // }
+  }
 
   @Override
   public void teleopInit() {

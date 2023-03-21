@@ -31,7 +31,7 @@ public class ClosePinchers extends CommandBase {
 
   @Override
   public void execute() {
-    m_pincher.close(m_triggerAxis.getAsDouble());
+    m_pincher.close(Math.abs(m_triggerAxis.getAsDouble()));
   }
 
   @Override
@@ -41,6 +41,6 @@ public class ClosePinchers extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return m_pincher.isPastClosedPosition();
   }
 }

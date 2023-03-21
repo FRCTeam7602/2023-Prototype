@@ -4,13 +4,16 @@
 
 package frc.robot;
 
-import static frc.robot.Constants.OperatorConstants.ARM_TRIGGER_AXIS;
-import static frc.robot.Constants.OperatorConstants.ELEVATOR_TRIGGER_AXIS;
 import static frc.robot.Constants.OperatorConstants.GAMEPPAD_PORT;
 import static frc.robot.Constants.OperatorConstants.JOYSTICK_PORT;
-import static frc.robot.Constants.OperatorConstants.PINCHER_TRIGGER_AXIS;
+import static frc.robot.Constants.OperatorConstants.ELEVATOR_TRIGGER_AXIS;
+import static frc.robot.Constants.OperatorConstants.ARM_TRIGGER_AXIS;
+import static frc.robot.Constants.OperatorConstants.PINCHER_OPEN_AXIS;
+import static frc.robot.Constants.OperatorConstants.PINCHER_CLOSE_AXIS;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.ClosePinchers;
@@ -42,6 +45,12 @@ public class RobotContainer {
   private final CommandJoystick m_driverController = new CommandJoystick(JOYSTICK_PORT);
   private final CommandXboxController m_elevatorController = new CommandXboxController(GAMEPPAD_PORT);
 
+  private Command getMobilityCommand(double timeout, double speed) {
+    return new RunCommand(() -> {
+      m_driveTrain.drive(.5, 0);
+    }, m_driveTrain).repeatedly().withTimeout(timeout);
+  }
+
   public RobotContainer() {
     configureBindings();
 
@@ -50,6 +59,9 @@ public class RobotContainer {
     );
   }
 
+  public DriveTrain getDriveTrain() {
+    return m_driveTrain;
+  }
   /**
    * The joystick is already bound as it is used in the default command for the
    * drive train.  The binding here are for everything but the default drive.
@@ -69,10 +81,10 @@ public class RobotContainer {
       .whileTrue(new RetractArm(m_arm, () -> m_elevatorController.getRawAxis(ARM_TRIGGER_AXIS)));
 
     // pincher
-    m_elevatorController.axisGreaterThan(PINCHER_TRIGGER_AXIS, .5)
-      .whileTrue(new OpenPinchers(m_pincher, () -> m_elevatorController.getRawAxis(PINCHER_TRIGGER_AXIS)));
-    m_elevatorController.axisLessThan(PINCHER_TRIGGER_AXIS, -0.5)
-      .whileTrue(new ClosePinchers(m_pincher, () -> m_elevatorController.getRawAxis(PINCHER_TRIGGER_AXIS)));
+    m_elevatorController.axisGreaterThan(PINCHER_OPEN_AXIS, .5)
+      .whileTrue(new OpenPinchers(m_pincher, () -> m_elevatorController.getRawAxis(PINCHER_OPEN_AXIS)));
+    m_elevatorController.axisGreaterThan(PINCHER_CLOSE_AXIS, 0.5)
+      .whileTrue(new ClosePinchers(m_pincher, () -> m_elevatorController.getRawAxis(PINCHER_CLOSE_AXIS)));
     m_elevatorController.a().onTrue(new ReadyPinchers(m_pincher));
     m_elevatorController.b().onTrue(new GetStandingCone(m_pincher));
     m_elevatorController.x().onTrue(new GetCube(m_pincher));
@@ -82,6 +94,6 @@ public class RobotContainer {
    * Do we have anything for auton???
    */
   public Command getAutonomousCommand() {
-    return null;
+    return new SequentialCommandGroup(getMobilityCommand(5, .5));
   }
 }

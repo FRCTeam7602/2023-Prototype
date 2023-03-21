@@ -33,8 +33,8 @@ public final class Constants {
   public static final float ARM_SLOW_SCALING = 1.0f;
   public static final float ELEVATOR_MOVE_VELOCITY = 0.2f;
   public static final float ELEVATOR_SLOW_SCALING = 1.0f;
-  public static final float PINCHER_MOVE_VELOCITY = 0.5f;
-  public static final float PINCHER_CONTROL_SCALING = 5.0f;
+  public static final float PINCHER_MOVE_VELOCITY = 0.3f;
+  public static final float PINCHER_CONTROL_SCALING = 12.0f;
 
   // Arm limits
   public static class Arm {
@@ -45,13 +45,13 @@ public final class Constants {
   // Elevator limits and stops
   public static class Elevator {
     public static final int MIN_POSITION = 0;
-    public static final int MAX_POSITION = 30;
+    public static final int MAX_POSITION = 60;
   }
 
   // Pincher limits and stops
   public static class Pincher {
     public static final int MIN_POSITION = 0;
-    public static final int MAX_POSITION = 38;
+    public static final int MAX_POSITION = 23;
     public static final int CUBE_STOP = 36;
     public static final int CONE_STOP = 37;
     public static final int READY_STOP = 10;
@@ -61,8 +61,9 @@ public final class Constants {
     public static final int JOYSTICK_PORT = 0;
     public static final int GAMEPPAD_PORT = 1;
 
-    public static final int ARM_TRIGGER_AXIS = 3;
+    public static final int ARM_TRIGGER_AXIS = 5;
     public static final int ELEVATOR_TRIGGER_AXIS = 1;
-    public static final int PINCHER_TRIGGER_AXIS = 2;
+    public static final int PINCHER_CLOSE_AXIS = 3;
+    public static final int PINCHER_OPEN_AXIS = 2;
   }
 }

@@ -58,12 +58,17 @@ public class Pincher extends SubsystemBase {
     if (pincherEncoder.getPosition() >= Constants.Pincher.MAX_POSITION) {
       System.out.println("Hit Close Limit");
     } else {
-      move(scale(-velocity));
+      move(scale(velocity));
     }
   }
 
   public boolean isInPosition() {
     return Math.abs(pincherEncoder.getPosition() - targetPosition) < .1f;
+  }
+
+  public boolean isPastClosedPosition() {
+    System.out.println("Past Closed Position");
+    return (pincherEncoder.getPosition() >= Constants.Pincher.MAX_POSITION);
   }
 
   public void open(double velocity) {
