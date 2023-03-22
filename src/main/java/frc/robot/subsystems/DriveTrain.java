@@ -37,6 +37,7 @@ public class DriveTrain extends SubsystemBase {
     // omniRight.setSmartCurrentLimit(Constants.DRIVE_CURRENT_LIMIT);
 
     driveRight.setInverted(true);
+    omniRight.setInverted(true);
 
     drive = new DifferentialDrive(driveLeft, driveRight);
     omniDrive = new DifferentialDrive(omniLeft, omniRight);
@@ -56,13 +57,13 @@ public class DriveTrain extends SubsystemBase {
     if(Math.abs(forward) > .1 || Math.abs(rotation) > .1) {
       System.out.format("DRIVING %.2f by %.2f\n", forward, rotation);
     }
-    // if(Math.abs(forward) > .7) {
-    //   omniDrive.arcadeDrive(forward, rotation);
-    //   System.out.format("BOOSTING with OMNI %.2f by %.2f\n", forward, rotation);
-    // } else {
-    //   // note that it is important that the drive train motor controllers
-    //   // be configured for coasting when off
-    //   omniDrive.arcadeDrive(0, 0);
-    // }
+    if(Math.abs(forward) > .7) {
+      omniDrive.arcadeDrive(forward, rotation);
+      System.out.format("BOOSTING with OMNI %.2f by %.2f\n", forward, rotation);
+    } else {
+      // note that it is important that the drive train motor controllers
+      // be configured for coasting when off
+      omniDrive.arcadeDrive(0, 0);
+    }
   }
 }
