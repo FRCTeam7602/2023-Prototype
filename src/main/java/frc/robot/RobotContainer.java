@@ -4,12 +4,12 @@
 
 package frc.robot;
 
+import static frc.robot.Constants.OperatorConstants.ARM_TRIGGER_AXIS;
+import static frc.robot.Constants.OperatorConstants.ELEVATOR_TRIGGER_AXIS;
 import static frc.robot.Constants.OperatorConstants.GAMEPPAD_PORT;
 import static frc.robot.Constants.OperatorConstants.JOYSTICK_PORT;
-import static frc.robot.Constants.OperatorConstants.ELEVATOR_TRIGGER_AXIS;
-import static frc.robot.Constants.OperatorConstants.ARM_TRIGGER_AXIS;
-import static frc.robot.Constants.OperatorConstants.PINCHER_OPEN_AXIS;
 import static frc.robot.Constants.OperatorConstants.PINCHER_CLOSE_AXIS;
+import static frc.robot.Constants.OperatorConstants.PINCHER_OPEN_AXIS;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -23,14 +23,16 @@ import frc.robot.commands.ElevatorDown;
 import frc.robot.commands.ElevatorTop;
 import frc.robot.commands.ElevatorUp;
 import frc.robot.commands.ExtendArm;
-import frc.robot.commands.GetCube;
-import frc.robot.commands.GetStandingCone;
+import frc.robot.commands.LightsOff;
+import frc.robot.commands.LightsPurple;
+import frc.robot.commands.LightsYellow;
 import frc.robot.commands.OpenPinchers;
 import frc.robot.commands.ReadyPinchers;
 import frc.robot.commands.RetractArm;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.Pincher;
 
 /**
@@ -41,6 +43,7 @@ public class RobotContainer {
   private final DriveTrain m_driveTrain = new DriveTrain();
   private final Elevator m_elevator = new Elevator();
   private final Pincher m_pincher = new Pincher();
+  private final Lights m_lights = new Lights();
 
   private final CommandJoystick m_driverController = new CommandJoystick(JOYSTICK_PORT);
   private final CommandXboxController m_elevatorController = new CommandXboxController(GAMEPPAD_PORT);
@@ -86,14 +89,15 @@ public class RobotContainer {
     m_elevatorController.axisGreaterThan(PINCHER_CLOSE_AXIS, 0.5)
       .whileTrue(new ClosePinchers(m_pincher, () -> m_elevatorController.getRawAxis(PINCHER_CLOSE_AXIS)));
     m_elevatorController.a().onTrue(new ReadyPinchers(m_pincher));
-    m_elevatorController.b().onTrue(new GetStandingCone(m_pincher));
-    m_elevatorController.x().onTrue(new GetCube(m_pincher));
+    m_elevatorController.b().onTrue(new LightsOff(m_lights));
+    m_elevatorController.x().onTrue(new LightsPurple(m_lights));
+    m_elevatorController.y().onTrue(new LightsYellow(m_lights));
   }
 
   /**
    * Do we have anything for auton???
    */
   public Command getAutonomousCommand() {
-    return new SequentialCommandGroup(getMobilityCommand(5, .5));
+    return new SequentialCommandGroup(getMobilityCommand(1, -.25), getMobilityCommand(5, .5));
   }
 }
