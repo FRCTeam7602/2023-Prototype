@@ -73,6 +73,8 @@ public final class Constants {
     public static final int JOYSTICK_PORT = 0;
     public static final int GAMEPPAD_PORT = 1;
 
+    // gamepad trigger axis 4 should be right / left while
+    // axis 5 should be forward / back on right stick
     public static final int ARM_TRIGGER_AXIS = 5;
     public static final int ELEVATOR_TRIGGER_AXIS = 1;
     public static final int PINCHER_CLOSE_AXIS = 3;

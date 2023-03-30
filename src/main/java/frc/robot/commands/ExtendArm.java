@@ -7,14 +7,14 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.PidArm;
 
 public class ExtendArm extends CommandBase {
 
-  private final Arm m_arm;
+  private final PidArm m_arm;
   private final DoubleSupplier m_triggerAxis;
 
-  public ExtendArm(Arm arm, DoubleSupplier triggerAxis) {
+  public ExtendArm(PidArm arm, DoubleSupplier triggerAxis) {
     m_arm = arm;
     m_triggerAxis = triggerAxis;
     addRequirements(m_arm);

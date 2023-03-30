@@ -23,9 +23,9 @@ import frc.robot.commands.ExtendArm;
 import frc.robot.commands.OpenPinchers;
 import frc.robot.commands.ReadyPinchers;
 import frc.robot.commands.RetractArm;
-import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Lights;
+import frc.robot.subsystems.PidArm;
 import frc.robot.subsystems.PidElevator;
 import frc.robot.subsystems.Pincher;
 
@@ -33,7 +33,7 @@ import frc.robot.subsystems.Pincher;
  * The standard RobotContainer where the bulk of the robot is declared.
  */
 public class RobotContainer {
-  private final Arm m_arm = new Arm();
+  private final PidArm m_arm = new PidArm();
   private final DriveTrain m_driveTrain = new DriveTrain();
   private final PidElevator m_elevator = new PidElevator();
   private final Pincher m_pincher = new Pincher();
@@ -63,9 +63,9 @@ public class RobotContainer {
     // m_elevatorController.povDown().whileTrue(new ElevatorDown(m_elevator));
 
     // arm
-    m_elevatorController.axisGreaterThan(ARM_TRIGGER_AXIS, .5)
-      .whileTrue(new ExtendArm(m_arm, () -> m_elevatorController.getRawAxis(ARM_TRIGGER_AXIS)));
     m_elevatorController.axisLessThan(ARM_TRIGGER_AXIS, -0.5)
+      .whileTrue(new ExtendArm(m_arm, () -> m_elevatorController.getRawAxis(ARM_TRIGGER_AXIS)));
+    m_elevatorController.axisGreaterThan(ARM_TRIGGER_AXIS, 0.5)
       .whileTrue(new RetractArm(m_arm, () -> m_elevatorController.getRawAxis(ARM_TRIGGER_AXIS)));
 
     // pincher
@@ -75,8 +75,7 @@ public class RobotContainer {
       .whileTrue(new ClosePinchers(m_pincher, () -> m_elevatorController.getRawAxis(PINCHER_CLOSE_AXIS)));
     m_elevatorController.a().onTrue(new ReadyPinchers(m_pincher));
 
-    // lights - first trigger turns lights to chosen color; pressed again and
-    // they'll turn off
+    // lights
     m_elevatorController.x().onTrue(new ConditionalCommand(getLightsOffCommand(), getPurpleLightsCommand(), m_lights::isPurple));
     m_elevatorController.y().onTrue(new ConditionalCommand(getLightsOffCommand(), getYellowLightsCommand(), m_lights::isYellow));
   }
