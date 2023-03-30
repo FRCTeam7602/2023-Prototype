@@ -31,7 +31,6 @@ public class Drive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Drive command execute");
     m_driveTrain.drive(m_forward.getAsDouble(), m_rotation.getAsDouble());
   }
 

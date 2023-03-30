@@ -5,13 +5,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Lights;
+import frc.robot.subsystems.RioLights;
 
 public class LightsPurple extends CommandBase {
 
-  private final Lights m_lights;
+  private final RioLights m_lights;
 
-  public LightsPurple(Lights lights) {
+  public LightsPurple(RioLights lights) {
     m_lights = lights;
     addRequirements(m_lights);
   }
