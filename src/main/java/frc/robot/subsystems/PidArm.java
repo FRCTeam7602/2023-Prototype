@@ -66,6 +66,8 @@ public class PidArm extends SubsystemBase {
   @Override
   public void periodic() {
     updateDashboard();
+
+    // TODO - do we need to check if close to endpoints?
   }
 
   /**

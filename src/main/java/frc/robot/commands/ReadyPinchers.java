@@ -5,13 +5,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Pincher;
+import frc.robot.subsystems.PidPincher;
 
 public class ReadyPinchers extends CommandBase {
 
-  private final Pincher m_pincher;
+  private final PidPincher m_pincher;
 
-  public ReadyPinchers(Pincher pincher) {
+  public ReadyPinchers(PidPincher pincher) {
     m_pincher = pincher;
     addRequirements(m_pincher);
   }
@@ -33,6 +33,6 @@ public class ReadyPinchers extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return m_pincher.isInPosition();
+    return false;
   }
 }

@@ -7,7 +7,7 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Pincher;
+import frc.robot.subsystems.PidPincher;
 
 /**
  * Default control command for the pinchers.  The plan is that the left
@@ -17,10 +17,10 @@ import frc.robot.subsystems.Pincher;
  */
 public class OpenPinchers extends CommandBase {
 
-  private final Pincher m_pincher;
+  private final PidPincher m_pincher;
   private final DoubleSupplier m_triggerAxis;
 
-  public OpenPinchers(Pincher pincher, DoubleSupplier triggerAxis) {
+  public OpenPinchers(PidPincher pincher, DoubleSupplier triggerAxis) {
     m_pincher = pincher;
     m_triggerAxis = triggerAxis;
     addRequirements(m_pincher);
@@ -31,12 +31,14 @@ public class OpenPinchers extends CommandBase {
 
   @Override
   public void execute() {
-    m_pincher.open(m_triggerAxis.getAsDouble());
+    m_pincher.open(Math.abs(m_triggerAxis.getAsDouble()));
   }
 
   @Override
   public void end(boolean interrupted) {
-    m_pincher.stop();
+    if (!interrupted) {
+      m_pincher.stop();
+    }
   }
 
   @Override

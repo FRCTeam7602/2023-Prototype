@@ -7,7 +7,7 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Pincher;
+import frc.robot.subsystems.PidPincher;
 
 /**
  * The plan is that the left trigger on the gamepad will open the
@@ -17,10 +17,10 @@ import frc.robot.subsystems.Pincher;
  */
 public class ClosePinchers extends CommandBase {
 
-  private final Pincher m_pincher;
+  private final PidPincher m_pincher;
   private final DoubleSupplier m_triggerAxis;
 
-  public ClosePinchers(Pincher pincher, DoubleSupplier triggerAxis) {
+  public ClosePinchers(PidPincher pincher, DoubleSupplier triggerAxis) {
     m_pincher = pincher;
     m_triggerAxis = triggerAxis;
     addRequirements(m_pincher);
@@ -36,11 +36,13 @@ public class ClosePinchers extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    m_pincher.stop();
+    if (!interrupted) {
+      m_pincher.stop();
+    }
   }
 
   @Override
   public boolean isFinished() {
-    return m_pincher.isPastClosedPosition();
+    return false;
   }
 }

@@ -27,7 +27,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.PidArm;
 import frc.robot.subsystems.PidElevator;
-import frc.robot.subsystems.Pincher;
+import frc.robot.subsystems.PidPincher;
 
 /**
  * The standard RobotContainer where the bulk of the robot is declared.
@@ -36,7 +36,7 @@ public class RobotContainer {
   private final PidArm m_arm = new PidArm();
   private final DriveTrain m_driveTrain = new DriveTrain();
   private final PidElevator m_elevator = new PidElevator();
-  private final Pincher m_pincher = new Pincher();
+  private final PidPincher m_pincher = new PidPincher();
   private final Lights m_lights = new Lights();
 
   private final CommandJoystick m_driverController = new CommandJoystick(JOYSTICK_PORT);
@@ -73,6 +73,7 @@ public class RobotContainer {
       .whileTrue(new OpenPinchers(m_pincher, () -> m_elevatorController.getRawAxis(PINCHER_OPEN_AXIS)));
     m_elevatorController.axisGreaterThan(PINCHER_CLOSE_AXIS, 0.5)
       .whileTrue(new ClosePinchers(m_pincher, () -> m_elevatorController.getRawAxis(PINCHER_CLOSE_AXIS)));
+    // TODO - make this sequential: elevator up, pinchers out, arm extend, elevator down
     m_elevatorController.a().onTrue(new ReadyPinchers(m_pincher));
 
     // lights
