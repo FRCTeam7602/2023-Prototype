@@ -33,7 +33,6 @@ public class ReadyPinchers extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    System.out.println("FINISH...ING");
     return m_pincher.isInPosition();
   }
 }

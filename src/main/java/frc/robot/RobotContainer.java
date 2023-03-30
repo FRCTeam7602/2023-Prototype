@@ -11,6 +11,8 @@ import static frc.robot.Constants.OperatorConstants.PINCHER_CLOSE_AXIS;
 import static frc.robot.Constants.OperatorConstants.PINCHER_OPEN_AXIS;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -18,17 +20,14 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.ClosePinchers;
 import frc.robot.commands.Drive;
 import frc.robot.commands.ExtendArm;
-import frc.robot.commands.LightsOff;
-import frc.robot.commands.LightsPurple;
-import frc.robot.commands.LightsYellow;
 import frc.robot.commands.OpenPinchers;
 import frc.robot.commands.ReadyPinchers;
 import frc.robot.commands.RetractArm;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Lights;
 import frc.robot.subsystems.PidElevator;
 import frc.robot.subsystems.Pincher;
-import frc.robot.subsystems.RioLights;
 
 /**
  * The standard RobotContainer where the bulk of the robot is declared.
@@ -38,16 +37,10 @@ public class RobotContainer {
   private final DriveTrain m_driveTrain = new DriveTrain();
   private final PidElevator m_elevator = new PidElevator();
   private final Pincher m_pincher = new Pincher();
-  private final RioLights m_lights = new RioLights();
+  private final Lights m_lights = new Lights();
 
   private final CommandJoystick m_driverController = new CommandJoystick(JOYSTICK_PORT);
   private final CommandXboxController m_elevatorController = new CommandXboxController(GAMEPPAD_PORT);
-
-  private Command getMobilityCommand(double timeout, double speed) {
-    return new RunCommand(() -> {
-      m_driveTrain.drive(.5, 0);
-    }, m_driveTrain).repeatedly().withTimeout(timeout);
-  }
 
   public RobotContainer() {
     configureBindings();
@@ -57,9 +50,6 @@ public class RobotContainer {
     );
   }
 
-  public DriveTrain getDriveTrain() {
-    return m_driveTrain;
-  }
   /**
    * The joystick is already bound as it is used in the default command for the
    * drive train.  The binding here are for everything but the default drive.
@@ -84,15 +74,32 @@ public class RobotContainer {
     m_elevatorController.axisGreaterThan(PINCHER_CLOSE_AXIS, 0.5)
       .whileTrue(new ClosePinchers(m_pincher, () -> m_elevatorController.getRawAxis(PINCHER_CLOSE_AXIS)));
     m_elevatorController.a().onTrue(new ReadyPinchers(m_pincher));
-    m_elevatorController.b().onTrue(new LightsOff(m_lights));
-    m_elevatorController.x().onTrue(new LightsPurple(m_lights));
-    m_elevatorController.y().onTrue(new LightsYellow(m_lights));
+
+    // lights - first trigger turns lights to chosen color; pressed again and
+    // they'll turn off
+    m_elevatorController.x().onTrue(new ConditionalCommand(getLightsOffCommand(), getPurpleLightsCommand(), m_lights::isPurple));
+    m_elevatorController.y().onTrue(new ConditionalCommand(getLightsOffCommand(), getYellowLightsCommand(), m_lights::isYellow));
   }
 
-  /**
-   * Do we have anything for auton???
-   */
   public Command getAutonomousCommand() {
     return new SequentialCommandGroup(getMobilityCommand(1, -.25), getMobilityCommand(5, .5));
+  }
+
+  private Command getLightsOffCommand() {
+    return Commands.runOnce(m_lights::off, m_lights);
+  }
+
+  private Command getPurpleLightsCommand() {
+    return Commands.runOnce(m_lights::purple, m_lights);
+  }
+
+  private Command getYellowLightsCommand() {
+    return Commands.runOnce(m_lights::yellow, m_lights);
+  }
+
+  private Command getMobilityCommand(double timeout, double speed) {
+    return new RunCommand(() -> {
+      m_driveTrain.drive(.5, 0);
+    }, m_driveTrain).repeatedly().withTimeout(timeout);
   }
 }

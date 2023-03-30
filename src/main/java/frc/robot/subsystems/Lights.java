@@ -4,47 +4,71 @@
 
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.ELEVATOR_CONTROLLER;
-import static frc.robot.Constants.ELEVATOR_SLOW_SCALING;
-import static frc.robot.Constants.ELEVATOR_MOVE_VELOCITY;
-import static frc.robot.Constants.Elevator.MAX_POSITION;
-import static frc.robot.Constants.Elevator.MIN_POSITION;
+import static frc.robot.Constants.Lights.COLOR_PURPLE;
+import static frc.robot.Constants.Lights.COLOR_YELLOW;
+import static frc.robot.Constants.Lights.LED_COUNT;
+import static frc.robot.Constants.Lights.PORT;
 
-import com.ctre.phoenix.CANifier;
-import com.ctre.phoenix.CANifier.LEDChannel;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.RelativeEncoder;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Lights extends SubsystemBase {
 
-  private final CANifier canifier;
+  private final AddressableLED m_leds;
+  private final AddressableLEDBuffer m_ledBuffer;
+
+  private State m_state;
 
   public Lights() {
-    canifier = new CANifier(14);
+    m_leds = new AddressableLED(PORT);
+    m_ledBuffer = new AddressableLEDBuffer(LED_COUNT);
+    m_leds.setLength(m_ledBuffer.getLength());
+    m_leds.setData(m_ledBuffer);
+    m_leds.start();
+    m_state = State.OFF;
   }
 
   @Override
   public void periodic() {}
 
+  public boolean isPurple() {
+    return m_state == State.PURPLE;
+  }
+
+  public boolean isYellow() {
+    return m_state == State.YELLOW;
+  }
+
   public void off() {
-    canifier.setLEDOutput(0, LEDChannel.LEDChannelA);
-    canifier.setLEDOutput(0, LEDChannel.LEDChannelB);
-    canifier.setLEDOutput(0, LEDChannel.LEDChannelC);
+    setSolidColor(new int[] {0, 0, 0});
+    m_state = State.OFF;
   }
 
   public void purple() {
-    canifier.setLEDOutput(0, LEDChannel.LEDChannelA);
-    canifier.setLEDOutput(1, LEDChannel.LEDChannelB);
-    canifier.setLEDOutput(1, LEDChannel.LEDChannelC);
+    setSolidColor(COLOR_PURPLE);
+    m_state = State.PURPLE;
   }
 
   public void yellow() {
-    canifier.setLEDOutput(0.2, LEDChannel.LEDChannelA);
-    canifier.setLEDOutput(1, LEDChannel.LEDChannelB);
-    canifier.setLEDOutput(0, LEDChannel.LEDChannelC);
+    setSolidColor(COLOR_YELLOW);
+    m_state = State.YELLOW;
+  }
+
+  private void setSolidColor(int[] color) {
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+      m_ledBuffer.setRGB(i, color[0], color[1], color[2]);
+    }
+    m_leds.setData(m_ledBuffer);
+  }
+
+  /**
+   * Keeping track of state so we can toggle lights on / off with a single
+   * button instead of using a separate button for off.
+   */
+  enum State {
+    OFF,
+    PURPLE,
+    YELLOW;
   }
 }

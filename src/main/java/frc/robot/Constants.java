@@ -57,6 +57,18 @@ public final class Constants {
     public static final int READY_STOP = 10;
   }
 
+  // Lights
+  public static class Lights {
+    // the total number of LEDs connected since we control each individually
+    public static final int LED_COUNT = 60;
+    // note that this port is a PWM port in RoboRio (not a CAN address)
+    public static final int PORT = 9;
+    // the light colors are RGB values 0-255
+    public static final int[] COLOR_PURPLE = {255, 0, 255};
+    public static final int[] COLOR_YELLOW = {255, 240, 0};
+  }
+
+  // Controllers
   public static class OperatorConstants {
     public static final int JOYSTICK_PORT = 0;
     public static final int GAMEPPAD_PORT = 1;
