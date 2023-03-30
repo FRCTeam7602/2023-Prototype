@@ -42,13 +42,13 @@ public class Pincher extends SubsystemBase {
 
   public void clampCube() {
     System.out.println("Pincher Clamp Cube");
-    targetPosition = Constants.Pincher.CUBE_STOP;
+    targetPosition = Constants.Pincher.CUBE_POSITION;
     moveTowardTargetPosition(Constants.PINCHER_MOVE_VELOCITY);
   }
 
   public void clampStandingCone() {
     System.out.println("Pincher Clamp Standing Cone");
-    targetPosition = Constants.Pincher.CONE_STOP;
+    targetPosition = Constants.Pincher.CONE_POSITION;
     moveTowardTargetPosition(Constants.PINCHER_MOVE_VELOCITY);
   }
 
@@ -72,8 +72,8 @@ public class Pincher extends SubsystemBase {
   }
 
   public void open(double velocity) {
-    targetPosition = Constants.Pincher.MIN_POSITION;
-    if (pincherEncoder.getPosition() <= Constants.Pincher.MIN_POSITION) {
+    targetPosition = Constants.Pincher.START_POSITION;
+    if (pincherEncoder.getPosition() <= Constants.Pincher.START_POSITION) {
       System.out.println("Hit Open Limit");
     } else {
       move(scale(-velocity));
@@ -82,7 +82,7 @@ public class Pincher extends SubsystemBase {
 
   public void ready() {
     System.out.println("Pincher Ready Position");
-    targetPosition = Constants.Pincher.READY_STOP;
+    targetPosition = Constants.Pincher.OPEN_POSITION;
     moveTowardTargetPosition(.1); // Constants.PINCHER_MOVE_VELOCITY);
   }
 

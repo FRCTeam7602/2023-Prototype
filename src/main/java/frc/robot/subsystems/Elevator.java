@@ -8,7 +8,7 @@ import static frc.robot.Constants.ELEVATOR_CONTROLLER;
 import static frc.robot.Constants.ELEVATOR_SLOW_SCALING;
 import static frc.robot.Constants.ELEVATOR_MOVE_VELOCITY;
 import static frc.robot.Constants.Elevator.MAX_POSITION;
-import static frc.robot.Constants.Elevator.MIN_POSITION;
+import static frc.robot.Constants.Elevator.START_POSITION;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -53,7 +53,7 @@ public class Elevator extends SubsystemBase {
 
   public void elevatorBottom() {
     command = "BOTTOM";
-    targetPosition = MIN_POSITION;
+    targetPosition = START_POSITION;
     down();
   }
 
@@ -73,7 +73,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public boolean isBottom() {
-    return (elevatorEncoder.getPosition() - MIN_POSITION) <= 1.0f;
+    return (elevatorEncoder.getPosition() - START_POSITION) <= 1.0f;
   }
 
   public boolean isTop() {

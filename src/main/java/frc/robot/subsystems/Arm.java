@@ -63,7 +63,7 @@ public class Arm extends SubsystemBase {
   }
 
   public boolean isFullyRetracted() {
-    return (armEncoder.getPosition() - Constants.Arm.MIN_POSITION) <= 1.0f;
+    return (armEncoder.getPosition() - Constants.Arm.START_POSITION) <= 1.0f;
   }
 
   public boolean isFullyExtended() {

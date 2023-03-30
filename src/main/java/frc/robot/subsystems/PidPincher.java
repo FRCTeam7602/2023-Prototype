@@ -4,11 +4,11 @@
 
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.Pincher.CONE_STOP;
-import static frc.robot.Constants.Pincher.CUBE_STOP;
+import static frc.robot.Constants.Pincher.CONE_POSITION;
+import static frc.robot.Constants.Pincher.CUBE_POSITION;
 import static frc.robot.Constants.Pincher.MAX_POSITION;
-import static frc.robot.Constants.Pincher.MIN_POSITION;
-import static frc.robot.Constants.Pincher.READY_STOP;
+import static frc.robot.Constants.Pincher.START_POSITION;
+import static frc.robot.Constants.Pincher.OPEN_POSITION;
 import static frc.robot.Constants.PINCHER_MOVE_VELOCITY;
 
 import com.revrobotics.CANSparkMax;
@@ -75,12 +75,12 @@ public class PidPincher extends SubsystemBase {
 
   public void clampCube() {
     command = "Cube";
-    setPosition(CUBE_STOP);
+    setPosition(CUBE_POSITION);
   }
 
   public void clampStandingCone() {
     command = "Cone";
-    setPosition(CONE_STOP);
+    setPosition(CONE_POSITION);
   }
 
   public void close(double velocity) {
@@ -92,12 +92,12 @@ public class PidPincher extends SubsystemBase {
   public void open(double velocity) {
     command = "Open";
     // TODO incorporate magnitude of axis
-    setPosition(MIN_POSITION);
+    setPosition(START_POSITION);
   }
 
   public void ready() {
     command = "Ready Position";
-    setPosition(READY_STOP);
+    setPosition(OPEN_POSITION);
   }
 
   public void stop() {

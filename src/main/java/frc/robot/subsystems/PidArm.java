@@ -7,7 +7,7 @@ package frc.robot.subsystems;
 import static frc.robot.Constants.ARM_CONTROLLER;
 import static frc.robot.Constants.ARM_MOVE_VELOCITY;
 import static frc.robot.Constants.Arm.MAX_POSITION;
-import static frc.robot.Constants.Arm.MIN_POSITION;
+import static frc.robot.Constants.Arm.START_POSITION;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -91,7 +91,7 @@ public class PidArm extends SubsystemBase {
     if (!isFullyRetracted()) {
       m_motor.set(-rate * ARM_MOVE_VELOCITY);
     } else {
-      setPosition(MIN_POSITION);
+      setPosition(START_POSITION);
       warnLimitedCommand();
     }
   }
@@ -108,7 +108,7 @@ public class PidArm extends SubsystemBase {
   public boolean isFullyRetracted() {
     // TODO - consider checking elevator height for case that retract below
     // bummer will be different than retracted above it
-    return (m_encoder.getPosition() - MIN_POSITION) <= 1.0f;
+    return (m_encoder.getPosition() - START_POSITION) <= 1.0f;
   }
 
   public boolean isFullyExtended() {

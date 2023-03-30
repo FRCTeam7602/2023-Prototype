@@ -8,7 +8,7 @@ import static frc.robot.Constants.ELEVATOR_CONTROLLER;
 import static frc.robot.Constants.ELEVATOR_SLOW_SCALING;
 import static frc.robot.Constants.ELEVATOR_MOVE_VELOCITY;
 import static frc.robot.Constants.Elevator.MAX_POSITION;
-import static frc.robot.Constants.Elevator.MIN_POSITION;
+import static frc.robot.Constants.Elevator.START_POSITION;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;

@@ -38,23 +38,27 @@ public final class Constants {
 
   // Arm limits
   public static class Arm {
-    public static final int MIN_POSITION = 0;
+    public static final int START_POSITION = 0;
+    public static final int CLEAR_FRAME = 10;
     public static final int MAX_POSITION = 20;
   }
 
   // Elevator limits and stops
   public static class Elevator {
-    public static final int MIN_POSITION = 0;
-    public static final int MAX_POSITION = 60;
+    public static final int FLOOR_POSITION = -2;
+    public static final int START_POSITION = 0;
+    public static final int CLEAR_FRAME_POSITION = 2;
+    public static final int MID_GRID_POSITION = 25;
+    public static final int MAX_POSITION = 40;
   }
 
   // Pincher limits and stops
   public static class Pincher {
-    public static final int MIN_POSITION = 0;
-    public static final int MAX_POSITION = 23;
-    public static final int CUBE_STOP = 36;
-    public static final int CONE_STOP = 37;
-    public static final int READY_STOP = 10;
+    public static final int START_POSITION = 0;
+    public static final int OPEN_POSITION = 10;
+    public static final int CUBE_POSITION = 15;
+    public static final int CONE_POSITION = 18;
+    public static final int MAX_POSITION = 20;
   }
 
   // Lights
@@ -65,7 +69,7 @@ public final class Constants {
     public static final int PORT = 9;
     // the light colors are RGB values 0-255
     public static final int[] COLOR_PURPLE = {255, 0, 255};
-    public static final int[] COLOR_YELLOW = {255, 240, 0};
+    public static final int[] COLOR_YELLOW = {255, 150, 0};
   }
 
   // Controllers
