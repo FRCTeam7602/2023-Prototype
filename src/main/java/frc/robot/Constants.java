@@ -54,11 +54,11 @@ public final class Constants {
 
   // Pincher limits and stops
   public static class Pincher {
-    public static final int START_POSITION = 0;
-    public static final int OPEN_POSITION = 10;
-    public static final int CUBE_POSITION = 15;
-    public static final int CONE_POSITION = 18;
-    public static final int MAX_POSITION = 20;
+    public static final double START_POSITION = 0;
+    public static final double OPEN_POSITION = 1;
+    public static final double CUBE_POSITION = 1.5;
+    public static final double CONE_POSITION = 1.8;
+    public static final double MAX_POSITION = 2.0;
   }
 
   // Lights

@@ -36,17 +36,18 @@ public class PidPincher extends SubsystemBase {
     m_motor = new CANSparkMax(Constants.PINCHER_CONTROLLER, MotorType.kBrushless);
     m_motor.restoreFactoryDefaults();
     m_motor.setSmartCurrentLimit(Constants.PINCHER_CURRENT_LIMIT);
+    m_motor.setInverted(true);
     m_encoder = m_motor.getEncoder();
     m_pidController = m_motor.getPIDController();
 
     // PID config for this subsystem
-    kP = 0.1;
+    kP = 0.02;
     kI = 0;
     kD = 1;
     kIz = 0;
     kFF = 0;
-    kMaxOutput = .2;
-    kMinOutput = -.2;
+    kMaxOutput = .8;
+    kMinOutput = -.8;
 
     m_pidController.setP(kP);
     m_pidController.setI(kI);
@@ -111,10 +112,6 @@ public class PidPincher extends SubsystemBase {
 
   private void setPosition(double position) {
     m_pidController.setReference(position, CANSparkMax.ControlType.kPosition);
-  }
-
-  private void slowDown() {
-    m_motor.set(scale(m_motor.get()));
   }
 
   /**

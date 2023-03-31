@@ -18,7 +18,7 @@ public class Pincher extends SubsystemBase {
   private final RelativeEncoder pincherEncoder;
 
   // used by commands trying to move to a specific position
-  private int targetPosition;
+  private double targetPosition;
 
   public Pincher() {
     pincherMotor = new CANSparkMax(Constants.PINCHER_CONTROLLER, MotorType.kBrushless);
@@ -101,7 +101,7 @@ public class Pincher extends SubsystemBase {
   /**
    * Returns true if current position is past requested position.
    */
-  private boolean isPastPosition(int position) {
+  private boolean isPastPosition(double position) {
     return pincherEncoder.getPosition() > position;
   }
 
