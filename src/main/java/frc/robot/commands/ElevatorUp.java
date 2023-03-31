@@ -5,13 +5,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.PidElevator;
 
 public class ElevatorUp extends CommandBase {
 
-  private final Elevator m_elevator;
+  private final PidElevator m_elevator;
 
-  public ElevatorUp(Elevator elevator) {
+  public ElevatorUp(PidElevator elevator) {
     m_elevator = elevator;
     addRequirements(m_elevator);
   }

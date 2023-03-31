@@ -5,8 +5,6 @@
 package frc.robot.subsystems;
 
 import static frc.robot.Constants.ELEVATOR_CONTROLLER;
-import static frc.robot.Constants.ELEVATOR_SLOW_SCALING;
-import static frc.robot.Constants.ELEVATOR_MOVE_VELOCITY;
 import static frc.robot.Constants.Elevator.MAX_POSITION;
 import static frc.robot.Constants.Elevator.START_POSITION;
 
@@ -70,22 +68,22 @@ public class PidElevator extends SubsystemBase {
 
   public void elevatorTop() {
     command = "TOP";
-    // TODO
+    setPosition(MAX_POSITION);
   }
 
   public void elevatorBottom() {
     command = "BOTTOM";
-    // TODO
+    setPosition(START_POSITION);
   }
 
   public void moveUp() {
     command = "UP";
-    // TODO
+    setPosition(MAX_POSITION);
   }
 
   public void moveDown() {
     command = "DOWN";
-    // TODO
+    setPosition(START_POSITION);
   }
 
   public void stop() {
@@ -94,17 +92,19 @@ public class PidElevator extends SubsystemBase {
   }
 
   public boolean isBottom() {
-    // TODO
-    return true;
+    return (m_encoder.getPosition() - START_POSITION) <= 1.0f;
   }
 
   public boolean isTop() {
-    // TODO
-    return true;
+    return (MAX_POSITION - m_encoder.getPosition()) <= 1.0f;
   }
 
   private void ignoreCommand() {
     command = command + " (ignored)";
+  }
+
+  private void setPosition(double position) {
+    m_pidController.setReference(position, CANSparkMax.ControlType.kPosition);
   }
 
   private void updateDashboard() {

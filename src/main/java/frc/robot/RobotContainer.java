@@ -4,9 +4,10 @@
 
 package frc.robot;
 
-import static frc.robot.Constants.OperatorConstants.ARM_TRIGGER_AXIS;
 import static frc.robot.Constants.OperatorConstants.GAMEPPAD_PORT;
 import static frc.robot.Constants.OperatorConstants.JOYSTICK_PORT;
+import static frc.robot.Constants.OperatorConstants.ELEVATOR_TRIGGER_AXIS;
+import static frc.robot.Constants.OperatorConstants.ARM_TRIGGER_AXIS;
 import static frc.robot.Constants.OperatorConstants.PINCHER_CLOSE_AXIS;
 import static frc.robot.Constants.OperatorConstants.PINCHER_OPEN_AXIS;
 
@@ -19,6 +20,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.ClosePinchers;
 import frc.robot.commands.Drive;
+import frc.robot.commands.ElevatorBottom;
+import frc.robot.commands.ElevatorDown;
+import frc.robot.commands.ElevatorTop;
+import frc.robot.commands.ElevatorUp;
 import frc.robot.commands.ExtendArm;
 import frc.robot.commands.OpenPinchers;
 import frc.robot.commands.ReadyPinchers;
@@ -57,10 +62,10 @@ public class RobotContainer {
   private void configureBindings() {
 
     // elevator
-    // m_elevatorController.axisGreaterThan(ELEVATOR_TRIGGER_AXIS, 0.5).onTrue(new ElevatorBottom(m_elevator));
-    // m_elevatorController.axisLessThan(ELEVATOR_TRIGGER_AXIS, -0.5).onTrue(new ElevatorTop(m_elevator));
-    // m_elevatorController.povUp().whileTrue(new ElevatorUp(m_elevator));
-    // m_elevatorController.povDown().whileTrue(new ElevatorDown(m_elevator));
+    m_elevatorController.axisGreaterThan(ELEVATOR_TRIGGER_AXIS, 0.5).onTrue(new ElevatorBottom(m_elevator));
+    m_elevatorController.axisLessThan(ELEVATOR_TRIGGER_AXIS, -0.5).onTrue(new ElevatorTop(m_elevator));
+    m_elevatorController.povUp().whileTrue(new ElevatorUp(m_elevator));
+    m_elevatorController.povDown().whileTrue(new ElevatorDown(m_elevator));
 
     // arm
     m_elevatorController.axisLessThan(ARM_TRIGGER_AXIS, -0.5)
@@ -69,7 +74,7 @@ public class RobotContainer {
       .whileTrue(new RetractArm(m_arm, () -> m_elevatorController.getRawAxis(ARM_TRIGGER_AXIS)));
 
     // pincher
-    m_elevatorController.axisGreaterThan(PINCHER_OPEN_AXIS, .5)
+    m_elevatorController.axisGreaterThan(PINCHER_OPEN_AXIS, 0.5)
       .whileTrue(new OpenPinchers(m_pincher, () -> m_elevatorController.getRawAxis(PINCHER_OPEN_AXIS)));
     m_elevatorController.axisGreaterThan(PINCHER_CLOSE_AXIS, 0.5)
       .whileTrue(new ClosePinchers(m_pincher, () -> m_elevatorController.getRawAxis(PINCHER_CLOSE_AXIS)));
