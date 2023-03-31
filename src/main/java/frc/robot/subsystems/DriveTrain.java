@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DriveTrain extends SubsystemBase {
+  public static final boolean USE_OMNIS = false;
+
   private final CANSparkMax driveLeft;
   private final CANSparkMax driveRight;
   private final DifferentialDrive drive;
@@ -57,7 +59,7 @@ public class DriveTrain extends SubsystemBase {
     if(Math.abs(forward) > .1 || Math.abs(rotation) > .1) {
       System.out.format("DRIVING %.2f by %.2f\n", forward, rotation);
     }
-    if(Math.abs(forward) > .7) {
+    if(USE_OMNIS && (Math.abs(forward) > .7)) {
       omniDrive.arcadeDrive(forward, rotation);
       System.out.format("BOOSTING with OMNI %.2f by %.2f\n", forward, rotation);
     } else {
